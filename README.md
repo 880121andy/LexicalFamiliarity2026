@@ -4,7 +4,7 @@
 
 ## Overview
 
-This repository contains the datasets, code, and analysis results for the experiments from our paper, *"Lexical Familiarity Predicts Processing Depth for Nonliteral Language in Large Language Models."* Our research investigates how Large Language Models (LLMs) process language that deviates from literal, standard usage. By analyzing layer-wise representations using **Gemma-Scope-2** Sparse Autoencoders (SAEs), we establish a "lexical familiarity gradient" across five categories of nonliteral language.
+This repository contains the datasets, code, and analysis results for the experiments from our paper, *"Lexical Familiarity Predicts Processing Depth for Nonliteral Language in Large Language Models."* Our research investigates how Large Language Models (LLMs) process language that deviates from literal, standard usage. By analyzing layer-wise representations using Gemma-Scope-2 Sparse Autoencoders (SAEs), we establish a "lexical familiarity gradient" across five categories of nonliteral language.
 
 ## Repository Structure
 
