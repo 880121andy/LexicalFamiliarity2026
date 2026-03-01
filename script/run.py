@@ -1,5 +1,5 @@
 """
-TrustNLP 2026 Experiment - SAE Feature Analysis
+TrustNLP 2026 - SAE feature analysis script
 """
 
 # =============================================================================
@@ -187,6 +187,48 @@ def load_construction_pairs(df: pd.DataFrame) -> List[SlangPairWithPosition]:
     return pairs
 
 
+def load_literal_paraphrase_pairs(df: pd.DataFrame) -> List[SlangPairWithPosition]:
+    """Load literal paraphrase dataset with position tags"""
+    pairs = []
+    for _, row in df.iterrows():
+        try:
+            paraphrase_pos = ast.literal_eval(row['paraphrase_positions'])
+            literal_pos = ast.literal_eval(row['literal_positions'])
+
+            pairs.append(SlangPairWithPosition(
+                slang_text=str(row['paraphrase']),
+                literal_text=str(row['normal']),
+                slang_positions=paraphrase_pos,
+                literal_positions=literal_pos,
+                slang_segments=str(row.get('paraphrase_segments', '')),
+                literal_segments=str(row.get('literal_segments', ''))
+            ))
+        except Exception as e:
+            continue
+    return pairs
+
+
+def load_identical_pairs(df: pd.DataFrame) -> List[SlangPairWithPosition]:
+    """Load identical sentences dataset with position tags (should have no differing positions)"""
+    pairs = []
+    for _, row in df.iterrows():
+        try:
+            identical_pos = ast.literal_eval(row['identical_positions'])
+            literal_pos = ast.literal_eval(row['literal_positions'])
+
+            pairs.append(SlangPairWithPosition(
+                slang_text=str(row['identical']),
+                literal_text=str(row['normal']),
+                slang_positions=identical_pos,
+                literal_positions=literal_pos,
+                slang_segments=str(row.get('identical_segments', '')),
+                literal_segments=str(row.get('literal_segments', ''))
+            ))
+        except Exception as e:
+            continue
+    return pairs
+
+
 def load_simple_pairs(df: pd.DataFrame) -> List[SlangPair]:
     """Load simple pairs without position tags"""
     pairs = [
@@ -210,7 +252,7 @@ def load_model(model_id: str = "google/gemma-3-12b-it"):
         torch_dtype=torch.bfloat16,
         attn_implementation="eager",
         token=HF_TOKEN,
-        low_cpu_mem_usage=True, 
+        low_cpu_mem_usage=True,
     )
     model.eval()
 
@@ -974,7 +1016,7 @@ def analyze_results(df: pd.DataFrame, metric: str = 'l2_dist'):
     print(f"SAE: Gemma Scope 2")
     print(f"Dataset: {int(metric_df['n'].iloc[0])} pairs")
     print(f"Layers analyzed: {num_layers}")
-    print(f"\n*** Using TOKEN-LEVEL positions (not sentence-level) ***")
+    print(f"\n*** Using TOKEN-LEVEL positions ***")
 
     peak_idx = metric_df['mean'].idxmax()
     peak = metric_df.loc[peak_idx]
@@ -1221,8 +1263,16 @@ def main():
     # pairs = load_metaphor_pairs(df)
 
     # For idioms:
-    df = pd.read_csv('idiom_baseline.csv')
-    pairs = load_idiom_pairs(df)
+    # df = pd.read_csv('idiom_baseline.csv')
+    # pairs = load_idiom_pairs(df)
+
+    # For literal paraphrases:
+    # df = pd.read_csv('literal_paraphrase_baseline.csv')
+    # pairs = load_literal_paraphrase_pairs(df)
+
+    # For identical:
+    df = pd.read_csv('identical_baseline.csv')
+    pairs = load_identical_pairs(df)
 
     print(f"Loaded {len(pairs)} pairs")
 
