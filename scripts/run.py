@@ -1,5 +1,5 @@
 """
-TrustNLP 2026 - SAE feature analysis script
+SAE feature analysis script
 """
 
 # =============================================================================

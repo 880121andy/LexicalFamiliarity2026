@@ -1,0 +1,6 @@
+Category,Early Overlaps Baseline,Early Residual,Mid Overlaps Baseline,Mid Residual,Deep Overlaps Baseline,Deep Residual
+Metaphor,Yes,-0.000,No,0.049,Yes,0.004
+Semantic Shift,No,-0.044,No,-0.041,No,-0.012
+Construction,No,0.155,No,0.092,No,0.119
+Neologism,No,0.228,No,0.196,No,0.335
+Idiom,No,0.327,No,0.166,No,0.166
